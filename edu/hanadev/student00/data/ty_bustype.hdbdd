@@ -1,0 +1,17 @@
+namespace btc.edu.hanadev.student00.data;
+
+@Schema: 'SCHULUNG'
+context ty_bustype {
+
+    type t_bustyp  : String(30);
+    type t_anzahl  : Integer;
+    type t_antrieb : String(30);
+
+    type bustyp_stuct {
+        bustyp  : t_bustyp;
+        antrieb : t_antrieb;
+        anzahl  : t_anzahl;
+    };
+
+     
+};

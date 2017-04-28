@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dimension:dimension xmlns:Dimension="http://www.sap.com/ndb/BiModelDimension.ecore" schemaVersion="1.2" id="DEMO_BUSINESSPARTNER_WITH_COMPANYNAME" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" dimensionType="Standard">
+  <descriptions defaultDescription="DEMO_BUSINESSPARTNER_WITH_COMPANYNAME"/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <attributes>
+    <attribute id="PARTNERID" key="true" order="1" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="PARTNERID"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.BusinessPartner" columnName="PARTNERID"/>
+    </attribute>
+    <attribute id="COMPANYNAME" order="2" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="COMPANYNAME"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.BusinessPartner" columnName="COMPANYNAME"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <privateDataFoundation>
+    <tableProxies>
+      <tableProxy>
+        <table schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.BusinessPartner"/>
+      </tableProxy>
+    </tableProxies>
+    <joins/>
+    <layout>
+      <shapes>
+        <shape modelObjectName="sap.hana.democontent.epm.data::MD.BusinessPartner" modelObjectNameSpace="SAP_HANA_DEMO" modelObjectType="catalog">
+          <upperLeftCorner x="70" y="30"/>
+        </shape>
+        <shape modelObjectName="DataFoundation" modelObjectNameSpace="DataFoundation" modelObjectType="repository">
+          <upperLeftCorner x="40" y="85"/>
+          <rectangleSize height="0" width="0"/>
+        </shape>
+      </shapes>
+    </layout>
+  </privateDataFoundation>
+  <hierarchies/>
+</Dimension:dimension>

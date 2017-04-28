@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dimension:dimension xmlns:Dimension="http://www.sap.com/ndb/BiModelDimension.ecore" schemaVersion="1.2" id="DEMO_EMPLOYEES_WITH_ADDRESS" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" dimensionType="Standard">
+  <descriptions defaultDescription="DEMO_EMPLOYEES_WITH_ADDRESS"/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <attributes>
+    <attribute id="EMPLOYEEID" key="true" order="1" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="EMPLOYEEID"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Employees" columnName="EMPLOYEEID"/>
+    </attribute>
+    <attribute id="NAME_FIRST" order="2" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="NAME_FIRST"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Employees" columnName="NAME.FIRST"/>
+    </attribute>
+    <attribute id="NAME_LAST" order="3" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="NAME_LAST"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Employees" columnName="NAME.LAST"/>
+    </attribute>
+    <attribute id="CITY" order="4" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="CITY"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Addresses" columnName="CITY"/>
+    </attribute>
+    <attribute id="POSTALCODE" order="5" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="POSTALCODE"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Addresses" columnName="POSTALCODE"/>
+    </attribute>
+    <attribute id="STREET" order="6" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="STREET"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Addresses" columnName="STREET"/>
+    </attribute>
+    <attribute id="COUNTRY" order="7" attributeHierarchyActive="false" displayAttribute="false">
+      <descriptions defaultDescription="COUNTRY"/>
+      <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Addresses" columnName="COUNTRY"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <privateDataFoundation>
+    <tableProxies>
+      <tableProxy>
+        <table schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Employees"/>
+      </tableProxy>
+      <tableProxy>
+        <table schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Addresses"/>
+      </tableProxy>
+    </tableProxies>
+    <joins>
+      <join>
+        <leftTable schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Employees"/>
+        <rightTable schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Addresses"/>
+        <leftColumns>
+          <columnName>ADDRESSES.ADDRESSID</columnName>
+        </leftColumns>
+        <rightColumns>
+          <columnName>ADDRESSID</columnName>
+        </rightColumns>
+        <properties joinOperator="Equal" joinType="referential"/>
+      </join>
+    </joins>
+    <layout>
+      <shapes>
+        <shape modelObjectName="sap.hana.democontent.epm.data::MD.Employees" modelObjectNameSpace="SAP_HANA_DEMO" modelObjectType="catalog">
+          <upperLeftCorner x="70" y="30"/>
+        </shape>
+        <shape modelObjectName="sap.hana.democontent.epm.data::MD.Addresses" modelObjectNameSpace="SAP_HANA_DEMO" modelObjectType="catalog">
+          <upperLeftCorner x="426" y="30"/>
+        </shape>
+        <shape modelObjectName="DataFoundation" modelObjectNameSpace="DataFoundation" modelObjectType="repository">
+          <upperLeftCorner x="40" y="85"/>
+          <rectangleSize height="0" width="0"/>
+        </shape>
+      </shapes>
+    </layout>
+  </privateDataFoundation>
+  <hierarchies/>
+</Dimension:dimension>

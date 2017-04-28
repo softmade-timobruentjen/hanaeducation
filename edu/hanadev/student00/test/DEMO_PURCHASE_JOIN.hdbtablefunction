@@ -1,0 +1,32 @@
+FUNCTION "SCHULUNG"."btc.edu.hanadev.student00.test::DEMO_PURCHASE_JOIN" ( ) 
+	RETURNS table(PURCHASEORDERID   NVARCHAR(10),
+	              PARTNERID         NVARCHAR(10),
+	              TOTAL_GROSSAMOUNT DECIMAL(15,2),
+	              GROSSAMOUNT       DECIMAL(15,2)) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+/***************************** 
+	Write your function logic
+ *****************************/
+ header = select "PURCHASEORDERID","HISTORY.CREATEDBY.EMPLOYEEID","HISTORY.CREATEDAT","HISTORY.CHANGEDBY.EMPLOYEEID","HISTORY.CHANGEDAT",
+				 "NOTEID","PARTNER.PARTNERID","CURRENCY","GROSSAMOUNT","NETAMOUNT","TAXAMOUNT","LIFECYCLESTATUS","APPROVALSTATUS",
+				 "CONFIRMSTATUS","ORDERINGSTATUS","INVOICINGSTATUS"
+ 			from "SAP_HANA_DEMO"."sap.hana.democontent.epm.data::PO.Header";
+ 			
+ items = select "PURCHASEORDERID","PURCHASEORDERITEM","PRODUCT.PRODUCTID","NOTEID","CURRENCY","GROSSAMOUNT","NETAMOUNT","TAXAMOUNT",
+				"QUANTITY","QUANTITYUNIT","DELIVERYDATE"
+	       from "SAP_HANA_DEMO"."sap.hana.democontent.epm.data::PO.Item";
+ 
+ joined = select :header."PURCHASEORDERID",:header."PARTNER.PARTNERID" AS "PARTNERID",:header."GROSSAMOUNT" AS "TOTAL_GROSSAMOUNT",
+                 :items."GROSSAMOUNT" * :items."QUANTITY" AS "GROSSAMOUNT"
+            from :header
+            inner join :items on :items."PURCHASEORDERID" = :header."PURCHASEORDERID";
+             
+ aggregation = select :joined."PURCHASEORDERID", :joined."PARTNERID", SUM(:joined."TOTAL_GROSSAMOUNT") AS "TOTAL_GROSSAMOUNT",
+                      SUM(:joined."GROSSAMOUNT") AS "GROSSAMOUNT"
+                 from :joined
+                group by :joined."PURCHASEORDERID", :joined."PARTNERID";
+ 
+ RETURN :aggregation;       
+END;

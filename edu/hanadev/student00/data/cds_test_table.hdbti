@@ -1,0 +1,13 @@
+// To define a table import from a CSV file to a table you can use the following code.
+// In the example the CSV files should exist in sample.test package 
+// The number of table columns and their types must match the number of CSV columns and their types. 
+
+import = 
+        [
+            {
+                cdstable = "btc.edu.hanadev.student00.data::cds_test_table";        // Target CDS table
+                file = "btc.edu.hanadev.student00.data:tfl-buses-type.csv";          // Source CSV file
+                header = true;                                                       // CSV file does not include a header first line
+                delimField = ";";                                                    // CSV data value delimiter, default is ","
+            }
+         ];

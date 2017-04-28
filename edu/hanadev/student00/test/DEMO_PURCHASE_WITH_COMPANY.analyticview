@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Cube:cube xmlns:Cube="http://www.sap.com/ndb/BiModelCube.ecore" schemaVersion="1.5" id="DEMO_PURCHASE_WITH_COMPANY" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled">
+  <descriptions defaultDescription="DEMO_PURCHASE_WITH_COMPANY"/>
+  <localVariables/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <privateMeasureGroup id="MeasureGroup">
+    <attributes>
+      <attribute id="PURCHASEORDERID" key="true" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PURCHASEORDERID"/>
+        <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::PO.Header" columnName="PURCHASEORDERID"/>
+      </attribute>
+      <attribute id="PARTNER_PARTNERID" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PARTNER_PARTNERID"/>
+        <keyMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::PO.Header" columnName="PARTNER.PARTNERID"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies>
+        <tableProxy centralTable="true">
+          <table schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::PO.Header"/>
+        </tableProxy>
+      </tableProxies>
+      <joins/>
+      <layout>
+        <shapes>
+          <shape modelObjectName="sap.hana.democontent.epm.data::PO.Header" modelObjectNameSpace="SAP_HANA_DEMO" modelObjectType="catalog">
+            <upperLeftCorner x="70" y="30"/>
+          </shape>
+        </shapes>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="GROSSAMOUNT" order="2" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="GROSSAMOUNT"/>
+        <measureMapping schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::PO.Header" columnName="GROSSAMOUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <sharedDimensions>
+      <logicalJoin associatedObjectUri="/btc.edu.hanadev.student00.test/attributeviews/DEMO_BUSINESSPARTNER_WITH_COMPANYNAME">
+        <attributes>
+          <attributeRef>#PARTNER_PARTNERID</attributeRef>
+        </attributes>
+        <associatedAttributeNames>
+          <attributeName>PARTNERID</attributeName>
+        </associatedAttributeNames>
+        <properties joinOperator="Equal" joinType="referential"/>
+        <associatedAttributeFeatures/>
+      </logicalJoin>
+    </sharedDimensions>
+    <layout>
+      <shapes>
+        <shape modelObjectName="MEASURE_GROUP" modelObjectType="repository">
+          <upperLeftCorner x="300" y="200"/>
+        </shape>
+        <shape modelObjectName="/btc.edu.hanadev.student00.test/attributeviews/DEMO_BUSINESSPARTNER_WITH_COMPANYNAME" modelObjectType="repository">
+          <upperLeftCorner x="632" y="30"/>
+        </shape>
+        <shape modelObjectName="LogicalView" modelObjectNameSpace="MeasureGroup" modelObjectType="repository">
+          <upperLeftCorner x="40" y="85"/>
+          <rectangleSize height="0" width="0"/>
+        </shape>
+      </shapes>
+    </layout>
+  </privateMeasureGroup>
+</Cube:cube>

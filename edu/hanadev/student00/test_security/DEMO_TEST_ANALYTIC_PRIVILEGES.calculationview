@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="DEMO_TEST_ANALYTIC_PRIVILEGES" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="DEMO_TEST_ANALYTIC_PRIVILEGES"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="LONDON_BUS" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SCHULUNG" columnObjectName="LONDON_BUS"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews/>
+  <logicalModel id="LONDON_BUS">
+    <descriptions/>
+    <attributes>
+      <attribute id="Bus_Type" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions/>
+        <keyMapping schemaName="SCHULUNG" columnObjectName="LONDON_BUS" columnName="Bus Type"/>
+      </attribute>
+      <attribute id="Drive_train_type" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions/>
+        <keyMapping schemaName="SCHULUNG" columnObjectName="LONDON_BUS" columnName="Drive train type"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="2010" order="3" aggregationType="sum" measureType="simple">
+        <descriptions/>
+        <measureMapping schemaName="SCHULUNG" columnObjectName="LONDON_BUS" columnName="2010"/>
+      </measure>
+      <measure id="2011" order="4" aggregationType="sum" measureType="simple">
+        <descriptions/>
+        <measureMapping schemaName="SCHULUNG" columnObjectName="LONDON_BUS" columnName="2011"/>
+      </measure>
+      <measure id="2012" order="5" aggregationType="sum" measureType="simple">
+        <descriptions/>
+        <measureMapping schemaName="SCHULUNG" columnObjectName="LONDON_BUS" columnName="2012"/>
+      </measure>
+      <measure id="2013" order="6" aggregationType="sum" measureType="simple">
+        <descriptions/>
+        <measureMapping schemaName="SCHULUNG" columnObjectName="LONDON_BUS" columnName="2013"/>
+      </measure>
+      <measure id="2014" order="7" aggregationType="sum" measureType="simple">
+        <descriptions/>
+        <measureMapping schemaName="SCHULUNG" columnObjectName="LONDON_BUS" columnName="2014"/>
+      </measure>
+      <measure id="2015" order="8" aggregationType="sum" measureType="simple">
+        <descriptions/>
+        <measureMapping schemaName="SCHULUNG" columnObjectName="LONDON_BUS" columnName="2015"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

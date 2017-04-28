@@ -1,0 +1,1 @@
+SELECT * FROM "SCHULUNG"."btc.edu.hanadev.student00.test::DEMO_PURCHASE_JOIN"()

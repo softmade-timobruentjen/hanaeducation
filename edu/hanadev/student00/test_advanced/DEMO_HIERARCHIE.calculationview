@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" xmlns:DataFoundation="http://www.sap.com/ndb/BiModelDataFoundation.ecore" xmlns:Dimension="http://www.sap.com/ndb/BiModelDimension.ecore" schemaVersion="2.3" id="DEMO_HIERARCHIE" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="DEMO_HIERARCHIE"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.hana.democontent.epm.data::PO.Header" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::PO.Header"/>
+    </DataSource>
+    <DataSource id="M_TIME_DIMENSION" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="_SYS_BI" columnObjectName="M_TIME_DIMENSION"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="PURCHASEORDERID"/>
+        <viewAttribute id="GROSSAMOUNT"/>
+        <viewAttribute id="HISTORY_CREATEDAT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.hana.democontent.epm.data::PO.Header">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PURCHASEORDERID" source="PURCHASEORDERID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="GROSSAMOUNT" source="GROSSAMOUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_CREATEDAT" source="HISTORY.CREATEDAT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="DATE_SQL"/>
+        <viewAttribute id="YEAR_INT"/>
+        <viewAttribute id="QUARTER_INT"/>
+        <viewAttribute id="MONTH_INT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#M_TIME_DIMENSION">
+        <mapping xsi:type="Calculation:AttributeMapping" target="DATE_SQL" source="DATE_SQL"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="YEAR_INT" source="YEAR_INT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="QUARTER_INT" source="QUARTER_INT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="MONTH_INT" source="MONTH_INT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="C1_N" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="GROSSAMOUNT"/>
+        <viewAttribute id="PURCHASEORDERID"/>
+        <viewAttribute id="YEAR_INT"/>
+        <viewAttribute id="QUARTER_INT"/>
+        <viewAttribute id="MONTH_INT"/>
+        <viewAttribute hidden="true" id="JOIN$DATE_SQL$HISTORY_CREATEDAT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="YEAR_INT" source="YEAR_INT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="QUARTER_INT" source="QUARTER_INT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="MONTH_INT" source="MONTH_INT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DATE_SQL$HISTORY_CREATEDAT" source="DATE_SQL"/>
+      </input>
+      <input node="#Projection_2">
+        <mapping xsi:type="Calculation:AttributeMapping" target="GROSSAMOUNT" source="GROSSAMOUNT"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PURCHASEORDERID" source="PURCHASEORDERID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DATE_SQL$HISTORY_CREATEDAT" source="HISTORY_CREATEDAT"/>
+      </input>
+      <joinAttribute name="JOIN$DATE_SQL$HISTORY_CREATEDAT"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Join_1">
+    <descriptions/>
+    <attributes>
+      <attribute id="PURCHASEORDERID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PURCHASEORDERID"/>
+        <keyMapping columnObjectName="Join_1" columnName="PURCHASEORDERID"/>
+      </attribute>
+      <attribute id="YEAR_INT" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="YEAR_INT"/>
+        <keyMapping columnObjectName="Join_1" columnName="YEAR_INT"/>
+      </attribute>
+      <attribute id="QUARTER_INT" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="QUARTER_INT"/>
+        <keyMapping columnObjectName="Join_1" columnName="QUARTER_INT"/>
+      </attribute>
+      <attribute id="MONTH_INT" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="MONTH_INT"/>
+        <keyMapping columnObjectName="Join_1" columnName="MONTH_INT"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="GROSSAMOUNT" order="1" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="GROSSAMOUNT"/>
+        <measureMapping columnObjectName="Join_1" columnName="GROSSAMOUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions>
+      <localDimension id="Zeit">
+        <attributeRef xsi:type="DataFoundation:Attribute">#YEAR_INT</attributeRef>
+        <attributeRef xsi:type="DataFoundation:Attribute">#QUARTER_INT</attributeRef>
+        <attributeRef xsi:type="DataFoundation:Attribute">#MONTH_INT</attributeRef>
+        <hierarchies>
+          <hierarchy xsi:type="Dimension:LeveledHierarchy" id="Zeit" aggregateAllNodes="true" rootNodeVisibility="ADD_ROOT_NODE" withRootNode="true" nodeStyle="LEVEL_NAME">
+            <descriptions defaultDescription="Zeit"/>
+            <levels>
+              <level levelAttribute="#YEAR_INT" levelType="MDLEVEL_TYPE_TIME_YEARS" order="1"/>
+              <level levelAttribute="#QUARTER_INT" levelType="MDLEVEL_TYPE_TIME_QUARTERS" order="2"/>
+              <level levelAttribute="#MONTH_INT" levelType="MDLEVEL_TYPE_TIME_MONTHS" order="3"/>
+            </levels>
+          </hierarchy>
+        </hierarchies>
+      </localDimension>
+    </localDimensions>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="120" y="190"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="220" y="396"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="50" y="390"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="120" y="290"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

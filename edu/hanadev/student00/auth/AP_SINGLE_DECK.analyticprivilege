@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Privilege:analyticPrivilege xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:AccessControl="http://www.sap.com/ndb/SQLCoreModelAccessControl.ecore" xmlns:Privilege="http://www.sap.com/ndb/BiModelPrivilege.ecore" schemaVersion="1.1" id="AP_SINGLE_DECK" privilegeType="ANALYTIC_PRIVILEGE">
+  <descriptions defaultDescription="AP_SINGLE_DECK"/>
+  <securedModels allInformationModels="false">
+    <modelUri>/btc.edu.hanadev.student00.test_security/calculationviews/DEMO_TEST_ANALYTIC_PRIVILEGES</modelUri>
+  </securedModels>
+  <restriction logicalOperator="AND">
+    <filter xsi:type="Privilege:AttributeFilter" attributeName="Bus_Type">
+      <valueFilter xsi:type="AccessControl:SingleValueFilter" including="true" value="Single deck"/>
+    </filter>
+    <attributeName>Bus_Type</attributeName>
+    <originInformationModelUri>/btc.edu.hanadev.student00.test_security/calculationviews/DEMO_TEST_ANALYTIC_PRIVILEGES</originInformationModelUri>
+  </restriction>
+</Privilege:analyticPrivilege>

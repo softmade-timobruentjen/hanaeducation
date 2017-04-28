@@ -1,0 +1,1 @@
+SELECT * FROM "SYSTEM"."btc.edu.hanadev.student00.data::EDU_LONDON_TOP_POPULATION"();

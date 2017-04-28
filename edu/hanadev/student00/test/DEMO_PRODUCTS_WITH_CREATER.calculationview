@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="DEMO_PRODUCTS_WITH_CREATER" applyPrivilegeType="NONE" checkAnalyticPrivileges="false" defaultClient="crossClient" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="internal" calculationScenarioType="TREE_BASED" dataCategory="DIMENSION" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Projection">
+  <descriptions defaultDescription="DEMO_PRODUCTS_WITH_CREATER"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="27"/>
+  <dataSources>
+    <DataSource id="sap.hana.democontent.epm.data::MD.Products" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Products"/>
+    </DataSource>
+    <DataSource id="sap.hana.democontent.epm.data::MD.Employees" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Employees"/>
+    </DataSource>
+    <DataSource id="sap.hana.democontent.epm.data::MD.Addresses" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.Addresses"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="PRODUCTID"/>
+        <viewAttribute id="CATEGORY"/>
+        <viewAttribute id="TYPECODE"/>
+        <viewAttribute id="HISTORY_CREATEDBY_EMPLOYEEID"/>
+        <viewAttribute id="PRICE"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.hana.democontent.epm.data::MD.Products">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCTID" source="PRODUCTID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CATEGORY" source="CATEGORY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TYPECODE" source="TYPECODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="HISTORY_CREATEDBY_EMPLOYEEID" source="HISTORY.CREATEDBY.EMPLOYEEID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PRICE" source="PRICE"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Employees">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="EMPLOYEEID"/>
+        <viewAttribute id="NAME_FIRST"/>
+        <viewAttribute id="NAME_LAST"/>
+        <viewAttribute id="ADDRESSES_ADDRESSID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.hana.democontent.epm.data::MD.Employees">
+        <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEID" source="EMPLOYEEID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME_FIRST" source="NAME.FIRST"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME_LAST" source="NAME.LAST"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESSES_ADDRESSID" source="ADDRESSES.ADDRESSID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="Addresses">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CITY"/>
+        <viewAttribute id="ADDRESSID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.hana.democontent.epm.data::MD.Addresses">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CITY" source="CITY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="ADDRESSID" source="ADDRESSID"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Employee_with_Address" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="CITY"/>
+        <viewAttribute id="NAME_LAST"/>
+        <viewAttribute id="NAME_FIRST"/>
+        <viewAttribute id="EMPLOYEEID"/>
+        <viewAttribute hidden="true" id="JOIN$ADDRESSES_ADDRESSID$ADDRESSID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Employees">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME_LAST" source="NAME_LAST"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME_FIRST" source="NAME_FIRST"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="EMPLOYEEID" source="EMPLOYEEID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ADDRESSES_ADDRESSID$ADDRESSID" source="ADDRESSES_ADDRESSID"/>
+      </input>
+      <input node="#Addresses">
+        <mapping xsi:type="Calculation:AttributeMapping" target="CITY" source="CITY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$ADDRESSES_ADDRESSID$ADDRESSID" source="ADDRESSID"/>
+      </input>
+      <joinAttribute name="JOIN$ADDRESSES_ADDRESSID$ADDRESSID"/>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="Produc_with_Creater" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="NAME_LAST"/>
+        <viewAttribute id="NAME_FIRST"/>
+        <viewAttribute id="CITY"/>
+        <viewAttribute id="PRODUCTID"/>
+        <viewAttribute id="CATEGORY"/>
+        <viewAttribute id="TYPECODE"/>
+        <viewAttribute id="PRICE"/>
+        <viewAttribute hidden="true" id="JOIN$EMPLOYEEID$HISTORY_CREATEDBY_EMPLOYEEID"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#Employee_with_Address">
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME_LAST" source="NAME_LAST"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="NAME_FIRST" source="NAME_FIRST"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CITY" source="CITY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$EMPLOYEEID$HISTORY_CREATEDBY_EMPLOYEEID" source="EMPLOYEEID"/>
+      </input>
+      <input node="#Projection_1">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCTID" source="PRODUCTID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="CATEGORY" source="CATEGORY"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="TYPECODE" source="TYPECODE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PRICE" source="PRICE"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$EMPLOYEEID$HISTORY_CREATEDBY_EMPLOYEEID" source="HISTORY_CREATEDBY_EMPLOYEEID"/>
+      </input>
+      <joinAttribute name="JOIN$EMPLOYEEID$HISTORY_CREATEDBY_EMPLOYEEID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="Produc_with_Creater">
+    <descriptions/>
+    <attributes>
+      <attribute id="NAME_LAST" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="NAME_LAST"/>
+        <keyMapping columnObjectName="Produc_with_Creater" columnName="NAME_LAST"/>
+      </attribute>
+      <attribute id="NAME_FIRST" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="NAME_FIRST"/>
+        <keyMapping columnObjectName="Produc_with_Creater" columnName="NAME_FIRST"/>
+      </attribute>
+      <attribute id="CITY" order="3" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CITY"/>
+        <keyMapping columnObjectName="Produc_with_Creater" columnName="CITY"/>
+      </attribute>
+      <attribute id="PRODUCTID" key="true" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PRODUCTID"/>
+        <keyMapping columnObjectName="Produc_with_Creater" columnName="PRODUCTID"/>
+      </attribute>
+      <attribute id="CATEGORY" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="CATEGORY"/>
+        <keyMapping columnObjectName="Produc_with_Creater" columnName="CATEGORY"/>
+      </attribute>
+      <attribute id="TYPECODE" order="6" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="TYPECODE"/>
+        <keyMapping columnObjectName="Produc_with_Creater" columnName="TYPECODE"/>
+      </attribute>
+      <attribute id="PRICE" order="7" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PRICE"/>
+        <keyMapping columnObjectName="Produc_with_Creater" columnName="PRICE"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures/>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="40" y="85"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="60" y="220"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Employees" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="50" y="423"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Addresses" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="210" y="480"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Employee_with_Address" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="150" y="330"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="Produc_with_Creater" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="189" y="150"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

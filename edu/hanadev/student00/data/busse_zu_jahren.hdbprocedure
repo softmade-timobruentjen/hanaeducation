@@ -1,0 +1,25 @@
+PROCEDURE "SCHULUNG"."btc.edu.hanadev.student00.data::busse_zu_jahren" (
+IN jahr Int,
+OUT busse "SCHULUNG"."btc.edu.hanadev.student00.data::ty_bustype.bustyp_stuct"
+ ) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA "SCHULUNG"
+	READS SQL DATA AS
+BEGIN
+/***************************** 
+	Write your procedure logic 
+ *****************************/
+   IF :jahr = 2015
+   THEN
+     busse = SELECT "Bus Type" AS "bustyp","Drive train type" AS "antrieb", "2015" AS "anzahl"
+               FROM "SCHULUNG"."LONDON_BUS";
+   ELSEIF :jahr = 2014
+   THEN
+     busse = SELECT "Bus Type" AS "bustyp","Drive train type" AS "antrieb", "2014" AS "anzahl"
+               FROM "SCHULUNG"."LONDON_BUS";   
+   ELSE
+     busse = SELECT "Bus Type" AS "bustyp","Drive train type" AS "antrieb", NULL AS "anzahl"
+               FROM "SCHULUNG"."LONDON_BUS";  
+   END IF;
+END;

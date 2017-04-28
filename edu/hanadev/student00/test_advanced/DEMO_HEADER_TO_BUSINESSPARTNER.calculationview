@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" schemaVersion="2.3" id="DEMO_HEADER_TO_BUSINESSPARTNER" applyPrivilegeType="ANALYTIC_PRIVILEGE" checkAnalyticPrivileges="true" defaultClient="$$client$$" defaultLanguage="$$language$$" hierarchiesSQLEnabled="false" translationRelevant="true" visibility="reportingEnabled" calculationScenarioType="TREE_BASED" dataCategory="CUBE" enforceSqlExecution="false" executionSemantic="UNDEFINED" outputViewType="Aggregation">
+  <descriptions defaultDescription="DEMO_HEADER_TO_BUSINESSPARTNER"/>
+  <localVariables/>
+  <variableMappings/>
+  <informationModelLayout relativeWidthScenario="42"/>
+  <dataSources>
+    <DataSource id="sap.hana.democontent.epm.data::MD.BusinessPartner" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::MD.BusinessPartner"/>
+    </DataSource>
+    <DataSource id="sap.hana.democontent.epm.data::PO.Header" type="DATA_BASE_TABLE">
+      <viewAttributes allViewAttributes="true"/>
+      <columnObject schemaName="SAP_HANA_DEMO" columnObjectName="sap.hana.democontent.epm.data::PO.Header"/>
+    </DataSource>
+  </dataSources>
+  <calculationViews>
+    <calculationView xsi:type="Calculation:ProjectionView" id="BUSINESS_PARTNER">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="PARTNERID"/>
+        <viewAttribute id="COMPANYNAME"/>
+        <viewAttribute id="WEBADDRESS"/>
+      </viewAttributes>
+      <calculatedViewAttributes>
+        <calculatedViewAttribute datatype="VARCHAR" id="WEBADDRESS_WITHOUT_HTTP" length="40" expressionLanguage="COLUMN_ENGINE">
+          <formula>replace(&quot;WEBADDRESS&quot;,'http://','')</formula>
+        </calculatedViewAttribute>
+      </calculatedViewAttributes>
+      <input node="#sap.hana.democontent.epm.data::MD.BusinessPartner">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PARTNERID" source="PARTNERID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMPANYNAME" source="COMPANYNAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="WEBADDRESS" source="WEBADDRESS"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:ProjectionView" id="PO_HEADER">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="PURCHASEORDERID"/>
+        <viewAttribute id="PARTNER_PARTNERID"/>
+        <viewAttribute id="GROSSAMOUNT"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#sap.hana.democontent.epm.data::PO.Header">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PURCHASEORDERID" source="PURCHASEORDERID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PARTNER_PARTNERID" source="PARTNER.PARTNERID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="GROSSAMOUNT" source="GROSSAMOUNT"/>
+      </input>
+    </calculationView>
+    <calculationView xsi:type="Calculation:JoinView" id="BP_TO_PO" cardinality="C1_N" joinOrder="OUTSIDE_IN" joinType="inner">
+      <descriptions/>
+      <viewAttributes>
+        <viewAttribute id="PARTNER_PARTNERID"/>
+        <viewAttribute id="PURCHASEORDERID"/>
+        <viewAttribute id="GROSSAMOUNT"/>
+        <viewAttribute id="COMPANYNAME"/>
+        <viewAttribute id="WEBADDRESS_WITHOUT_HTTP"/>
+      </viewAttributes>
+      <calculatedViewAttributes/>
+      <input node="#PO_HEADER">
+        <mapping xsi:type="Calculation:AttributeMapping" target="PARTNER_PARTNERID" source="PARTNER_PARTNERID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PURCHASEORDERID" source="PURCHASEORDERID"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="GROSSAMOUNT" source="GROSSAMOUNT"/>
+      </input>
+      <input node="#BUSINESS_PARTNER">
+        <mapping xsi:type="Calculation:AttributeMapping" target="COMPANYNAME" source="COMPANYNAME"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="WEBADDRESS_WITHOUT_HTTP" source="WEBADDRESS_WITHOUT_HTTP"/>
+        <mapping xsi:type="Calculation:AttributeMapping" target="PARTNER_PARTNERID" source="PARTNERID"/>
+      </input>
+      <joinAttribute name="PARTNER_PARTNERID"/>
+    </calculationView>
+  </calculationViews>
+  <logicalModel id="BP_TO_PO">
+    <descriptions/>
+    <attributes>
+      <attribute id="PARTNER_PARTNERID" order="1" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PARTNER_PARTNERID"/>
+        <keyMapping columnObjectName="BP_TO_PO" columnName="PARTNER_PARTNERID"/>
+      </attribute>
+      <attribute id="PURCHASEORDERID" order="2" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="PURCHASEORDERID"/>
+        <keyMapping columnObjectName="BP_TO_PO" columnName="PURCHASEORDERID"/>
+      </attribute>
+      <attribute id="COMPANYNAME" order="4" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="COMPANYNAME"/>
+        <keyMapping columnObjectName="BP_TO_PO" columnName="COMPANYNAME"/>
+      </attribute>
+      <attribute id="WEBADDRESS_WITHOUT_HTTP" order="5" attributeHierarchyActive="false" displayAttribute="false">
+        <descriptions defaultDescription="WEBADDRESS_WITHOUT_HTTP"/>
+        <keyMapping columnObjectName="BP_TO_PO" columnName="WEBADDRESS_WITHOUT_HTTP"/>
+      </attribute>
+    </attributes>
+    <calculatedAttributes/>
+    <privateDataFoundation>
+      <tableProxies/>
+      <joins/>
+      <layout>
+        <shapes/>
+      </layout>
+    </privateDataFoundation>
+    <baseMeasures>
+      <measure id="GROSSAMOUNT" order="3" aggregationType="sum" measureType="simple">
+        <descriptions defaultDescription="GROSSAMOUNT"/>
+        <measureMapping columnObjectName="BP_TO_PO" columnName="GROSSAMOUNT"/>
+      </measure>
+    </baseMeasures>
+    <calculatedMeasures/>
+    <restrictedMeasures/>
+    <localDimensions/>
+  </logicalModel>
+  <layout>
+    <shapes>
+      <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+        <upperLeftCorner x="99" y="87"/>
+        <rectangleSize height="0" width="0"/>
+      </shape>
+      <shape expanded="true" modelObjectName="BUSINESS_PARTNER" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="176" y="261"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="PO_HEADER" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="22" y="261"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+      <shape expanded="true" modelObjectName="BP_TO_PO" modelObjectNameSpace="CalculationView">
+        <upperLeftCorner x="99" y="165"/>
+        <rectangleSize height="-1" width="-1"/>
+      </shape>
+    </shapes>
+  </layout>
+</Calculation:scenario>

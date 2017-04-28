@@ -1,0 +1,11 @@
+FUNCTION "SCHULUNG"."btc.edu.hanadev.student00.data::EDU_LONDON_TOP_POPULATION" ( ) 
+	RETURNS table (max_pop INT)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER AS
+BEGIN
+/***************************** 
+	Write your functi on logic
+ *****************************/
+ return select max("Total_Daytime_Population_includes_tourists") max_pop
+ from "SCHULUNG"."LONDON";
+END;
