@@ -1,14 +1,14 @@
 // To define an HDB table with main sql type columns, you can use the following code.
-// In the example below a schema should exist.
+// In the example below a schema  should exist.
 
 
 table.schemaName = "SCHULUNG";
 table.tableType = COLUMNSTORE; // ROWSTORE is an alternative value
-
+ 
 
 table.columns =
  [
-    {name = "Bus Type";  sqlType = VARCHAR;  length = 15; defaultValue = "Doubledecker";comment = "String Type"; },
+    {name = "Bus_Type";  sqlType = VARCHAR;  length = 15; defaultValue = "Doubledecker";comment = "String Type"; },
     {name = "Drive train type";  sqlType = VARCHAR; length = 16; defaultValue = "Diesel"; } ,
     {name = "2010";  sqlType = SMALLINT; nullable = false; defaultValue="0"; },
     {name = "2011";  sqlType = SMALLINT; nullable = false; defaultValue="0"; },
@@ -19,4 +19,5 @@ table.columns =
 ];
 
 
-table.primaryKey.pkcolumns = ["Bus Type", "Drive train type"];
+
+table.primaryKey.pkcolumns = ["Bus_Type", "Drive train type"];

@@ -1,0 +1,8 @@
+namespace btc.edu.hanadev.student00.data;
+
+@Schema: 'SCHULUNG'
+
+    entity cds_test_ddl {
+        key "Bus_Type" : String(15);
+        key "Drive train type" : String(16);
+    };
